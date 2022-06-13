@@ -15,7 +15,7 @@ final List<String> familyTypes = makefamilyTypesList();
 ThemeColor themeColor = ThemeColor(themeColorMain: changeAppBarColor(2), themeColorBG: Color.fromARGB(255, 247, 247, 247), textColorMain: Colors.black );
 bool guessFamily = true;
 Map<String, List<int>> loadingCodes = {
-  "gymlet poznávačka": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107]
+  "gymlet poznávačka": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109]
 };
 
 void main() async {
@@ -100,7 +100,7 @@ List<String> makefamilyTypesList (){
   List<String> list = [
     'bôbovité','lipnicovité','iskerníkovité','ružovité','bukovité','čajovníkovité','ľaliovité','konopovité','kapustovité','vstavačovité','hluchavkovité','fialkovité',
     'lieskovité','brezovité','klinčekovité','mrkvovité','leknovité','lipovité','astrovité',"amarylkovité","pŕhľavovité","mrlíkovité","stavikrvovité","ľuľkovité",'makovité','magnóliovité',
-    'ginkovité','borovicovité','cyprusovité','tisovité','áronovité',
+    'ginkovité','borovicovité','cyprusovité','tisovité','áronovité','arekovité','kosatcovité',
   ];
   list.sort(((a, b) {return a.compareTo(b);}));
   return list;
@@ -182,7 +182,7 @@ List<Plant> makePlantList(){
     returnList.add(Plant('kapustovité', "kapsička", "pastierska", "kapsicka_pastierska", wikipediaLink: 'https://sk.wikipedia.org/wiki/Kapsička_pastierska'));
     returnList.add(Plant('kapustovité', "kapusta", "hlávková", "kapusta_hlavkova", wikipediaLink: 'https://sk.wikipedia.org/wiki/Kapusta_obyčajná_hlávková'));
     returnList.add(Plant('klinčekovité', "klinček", "", "klincek", wikipediaLink: 'https://sk.wikipedia.org/wiki/Klinčekovec_voňavý'));
-    returnList.add(Plant('konopovité', "konope", "siata", "konope_siata", wikipediaLink: 'https://sk.wikipedia.org/wiki/Konopa_siata'));
+    returnList.add(Plant('konopovité', "konopa", "siata", "konope_siata", wikipediaLink: 'https://sk.wikipedia.org/wiki/Konopa_siata'));
     returnList.add(Plant('ľaliovité', "konvalinka", "voňavá", "konvalinka_vonava", wikipediaLink: 'https://sk.wikipedia.org/wiki/Konvalinka_voňavá'));
     returnList.add(Plant('mrkvovité', "kôpor", "voňavý", "kopor_vonavy", wikipediaLink: 'https://sk.wikipedia.org/wiki/Kôpor_voňavý'));
     returnList.add(Plant('lipnicovité', "kukurica", "siata", "kukurica_siata", wikipediaLink: 'https://sk.wikipedia.org/wiki/Kukurica_siata'));
@@ -258,7 +258,52 @@ List<Plant> makePlantList(){
     returnList.add(Plant("borovicovité", "smrekovec", "opadavý", "smrekovec_opadavy", wikipediaLink: 'https://sk.wikipedia.org/wiki/Smrekovec_opadavý'));
     returnList.add(Plant("áronovité", "brečtan", "popínavý", "brectan_popinavy", wikipediaLink: 'https://sk.wikipedia.org/wiki/Brečtan_popínavý'));
     returnList.add(Plant("brezovité", "breza", "previsnutá", "breza_previsnuta", wikipediaLink: 'https://sk.wikipedia.org/wiki/Breza_previsnutá'));
-
+    returnList.add(Plant("iskerníkovité", "orlíček", "obyčajný", "orlicek_obycajny", wikipediaLink: 'https://cs.wikipedia.org/wiki/Orlíček'));
+    returnList.add(Plant("iskerníkovité", "ostrôžka", "poľná", "ostrozka_polna", wikipediaLink: 'https://sk.wikipedia.org/wiki/Ostrôžka_poľná'));
+    returnList.add(Plant("makovité", "mak", "siaty", "mak_siaty", wikipediaLink: 'https://sk.wikipedia.org/wiki/Mak_siaty'));
+    returnList.add(Plant("leknovité", "lekno", "modré", "lekno_modre", wikipediaLink: 'None'));
+    returnList.add(Plant("bukovité", "dub", "zimný", "dub_zimny", wikipediaLink: 'https://sk.wikipedia.org/wiki/Dub_zimný'));
+    returnList.add(Plant("fialkovité", "fialka", "trojfarebná", "fialka_trojfarebna", wikipediaLink: 'https://sk.wikipedia.org/wiki/Fialka_trojfarebná'));
+    returnList.add(Plant("kapustovité", "kel", "hlávkový", "kel_hlavkovy", wikipediaLink: 'https://sk.wikipedia.org/wiki/Kapusta_obyčajná_kelová'));
+    returnList.add(Plant("kapustovité", "kel", "ružičkový", "kel_ruzickovy", wikipediaLink: 'https://sk.wikipedia.org/wiki/Kapusta_obyčajná_ružičková'));
+    returnList.add(Plant("kapustovité", "kaleráb", "", "kalerab", wikipediaLink: 'https://sk.wikipedia.org/wiki/Kapusta_obyčajná_kalerábová'));
+    returnList.add(Plant("kapustovité", "karfiol", "", "karfiol", wikipediaLink: 'https://sk.wikipedia.org/wiki/Kapusta_obyčajná_karfiolová'));
+    returnList.add(Plant("kapustovité", "reďkev", "siata", "redkev_siata", wikipediaLink: 'https://sk.wikipedia.org/wiki/Reďkev_siata'));
+    returnList.add(Plant("kapustovité", "peniažtek", "roľný", "peniaztek_rolny", wikipediaLink: 'https://cs.wikipedia.org/wiki/Penízek_rolní'));
+    returnList.add(Plant("kapustovité", "žerušnica", "lúčna", "zeruznica_lucna", wikipediaLink: 'None'));
+    returnList.add(Plant("ružovité", "čerešňa", "višňová", "ceresna_visnova", wikipediaLink: 'https://sk.wikipedia.org/wiki/Čerešňa_višňová'));
+    returnList.add(Plant("bôbovité", "šošovica", "jedlá", "sosovica_jedla", wikipediaLink: 'https://sk.wikipedia.org/wiki/Šošovica_jedlá'));
+    returnList.add(Plant("bôbovité", "sója", "obyčajná", "soja_obycajna", wikipediaLink: 'https://sk.wikipedia.org/wiki/Sója'));
+    returnList.add(Plant("mrkvovité", "koriander", "siaty", "koriander_siaty", wikipediaLink: 'https://sk.wikipedia.org/wiki/Koriander_siaty'));
+    returnList.add(Plant("mrkvovité", "fenikel", "obyčajný", "fenikel_obycajny", wikipediaLink: 'https://sk.wikipedia.org/wiki/Fenikel_obyčajný'));
+    returnList.add(Plant("mrkvovité", "boľševník", "obrovský", "bolsevnik_obrovsky", wikipediaLink: 'https://sk.wikipedia.org/wiki/Boľševník_obrovský'));
+    returnList.add(Plant("mrkvovité", "kozonoha", "hostcova", "kozonoha_hostcova", wikipediaLink: 'https://sk.wikipedia.org/wiki/Kozonoha_hostcová'));
+    returnList.add(Plant("mrkvovité", "bolehlav", "škvrnitý", "bolehelav_skvrnity", wikipediaLink: 'https://sk.wikipedia.org/wiki/Bolehlav_škvrnitý'));
+    returnList.add(Plant("ľuľkovité", "tabak", "virgínsky", "tabak_virginsky", wikipediaLink: 'https://cs.wikipedia.org/wiki/Tabák_virginský'));
+    returnList.add(Plant("ľuľkovité", "durman", "obyčajný", "durman_obycajny", wikipediaLink: 'https://sk.wikipedia.org/wiki/Durman_obyčajný'));
+    returnList.add(Plant("ľuľkovité", "blen", "čierny", "blen_cierny", wikipediaLink: 'https://sk.wikipedia.org/wiki/Blen_čierny'));
+    returnList.add(Plant("hluchavkovité", "rozmarín", "lekársky", "rozmarin_lekarsky", wikipediaLink: 'https://sk.wikipedia.org/wiki/Rozmarín_lekársky'));
+    returnList.add(Plant("hluchavkovité", "levanduľa", "úzkolistá", "levandula_uskolista", wikipediaLink: 'https://sk.wikipedia.org/wiki/Levanduľa'));
+    returnList.add(Plant("hluchavkovité", "majorán", "záhradný", "majoran_zahradny", wikipediaLink: 'https://sk.wikipedia.org/wiki/Majorán_záhradný'));
+    returnList.add(Plant("hluchavkovité", "bazalka", "pravá", "bazalka_prava", wikipediaLink: 'https://sk.wikipedia.org/wiki/Bazalka_pravá'));
+    returnList.add(Plant("astrovité", "bodliak", "obyčajný", "bodliak_obycajny", wikipediaLink: 'https://sk.wikipedia.org/wiki/Bodliak'));
+    returnList.add(Plant("astrovité", "rebríček", "obyčajný", "rebricek_obycajny", wikipediaLink: 'https://sk.wikipedia.org/wiki/Rebríček_obyčajný'));
+    returnList.add(Plant("astrovité", "sedmokráska", "obyčajná", "sedmokraska_obycajna", wikipediaLink: 'https://sk.wikipedia.org/wiki/Sedmokráska_obyčajná'));
+    returnList.add(Plant("astrovité", "astry", "", "astry", wikipediaLink: 'https://sk.wikipedia.org/wiki/Astra_alpínska'));
+    returnList.add(Plant("astrovité", "aksamietnice", "", "aksamietnice", wikipediaLink: 'https://cs.wikipedia.org/wiki/Aksamitník'));
+    returnList.add(Plant("astrovité", "cínie", "", "cinie", wikipediaLink: 'None'));
+    returnList.add(Plant("astrovité", "georgíny", "", "georginy", wikipediaLink: 'None'));
+    returnList.add(Plant("ľaliovité", "modrica", "strapcovitá", "modrica_strapcovita", wikipediaLink: 'https://sk.wikipedia.org/wiki/Modrica'));
+    returnList.add(Plant("ľaliovité", "ľalia", "zlatohlavá", "lalia_zlatohlava", wikipediaLink: 'https://sk.wikipedia.org/wiki/Ľalia_zlatohlavá'));
+    returnList.add(Plant("ľaliovité", "kokorík", "mnohokvetý", "kokorik_mnohokvety", wikipediaLink: 'https://cs.wikipedia.org/wiki/Kokořík_mnohokvětý'));
+    returnList.add(Plant("ľaliovité", "vranovec", "štvorlistý", "vranovec_stvorlisty", wikipediaLink: 'https://sk.wikipedia.org/wiki/Vranovec_štvorlistý'));
+    returnList.add(Plant("amarylkovité", "bleduľa", "jarná", "bledula_jarna", wikipediaLink: 'https://sk.wikipedia.org/wiki/Bleduľa_jarná'));
+    returnList.add(Plant("arekovité", "datľovník", "obyčajný", "datlovnik_obycajny", wikipediaLink: 'https://sk.wikipedia.org/wiki/Datľovník_obyčajný'));
+    returnList.add(Plant("arekovité", "kokosovník", "obyčajný", "kokosovnik_obycajny", wikipediaLink: 'https://sk.wikipedia.org/wiki/Kokosovník'));
+    returnList.add(Plant("kosatcovité", "mečík", "", "mecik", wikipediaLink: 'https://cs.wikipedia.org/wiki/Mečík'));
+    returnList.add(Plant("kosatcovité", "kosatec", "nemecký", "kosatec_nemecky", wikipediaLink: 'https://cs.wikipedia.org/wiki/Kosatec'));
+    returnList.add(Plant("lipnicovité", "pýr", "plazivý", "pyr_plazivy", wikipediaLink: 'https://sk.wikipedia.org/wiki/Pýr_plazivý'));
+    returnList.add(Plant("lipnicovité", "proso", "siate", "proso_siate", wikipediaLink: 'https://sk.wikipedia.org/wiki/Proso_siate'));
     return returnList;
   } 
 
@@ -776,7 +821,7 @@ class _GuessingPageState extends State<GuessingPage> {
               onPressed: showHintDialog,
             ),
             IconButton(
-              icon: const Icon(Icons.keyboard_arrow_right),
+              icon: const Icon(Icons.next_plan_outlined),
               onPressed: (){
                 confirmationDynamic(
                   context,
@@ -1345,7 +1390,7 @@ class LearningPage extends StatefulWidget {
   @override
   State<LearningPage> createState() => _LearningPageState();
 }
-class _LearningPageState extends State<LearningPage> {
+class _LearningPageState extends State<LearningPage>{
   final _biggerFont = const TextStyle(fontSize: 30, color: Colors.black);
   Widget customSearchBar = const Text('Čeľade');
   Icon searchIcon = const Icon(Icons.search);
