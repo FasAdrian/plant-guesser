@@ -535,6 +535,8 @@ class _MyHomePageState extends State<MyHomePage> {
           () {Navigator.of(context).pop(false);},
           subtitle: Text('Chceš vypnút aplikáciu', style: TextStyle(color:themeColor.textColorMain)),
           title: Text('Si si istý?', style: TextStyle(color:themeColor.textColorMain)),
+          positiveAnswer: 'Opustiť',
+          negativeAnswer: 'Zostať',
         );
       },
       child: Scaffold(
@@ -565,6 +567,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 int playedGameCorrect = await loadFromPreferencesInt('playedGameCorrect');
                 int playedGameWrong = await loadFromPreferencesInt('playedGameWrong');
                 int playedGameHints = await loadFromPreferencesInt('playedGameHints');
+                bool tutorialPlayed = await loadFromPreferencesBool('tutorialGame1_isPlayed');
                 if(playedGameCorrect != 0 || playedGameWrong != 0){
                   showDialog(context: context, 
                     builder: (context){
@@ -652,8 +655,11 @@ class _MyHomePageState extends State<MyHomePage> {
                     }
                   );    
                 } else {
-                  
+                  debugPrint(tutorialPlayed.toString());
                   startGuessingPage(true);
+                  if(tutorialPlayed == false){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => GameTutorial(imageName: 'bioFlutterMainGame', numberOfImgs: 4, tutorialPref: 'tutorialGame1_isPlayed'))).then((val)=>{_getRequests()});
+                  }
                 }
               },
               style: ButtonStyle(
@@ -770,6 +776,8 @@ class _GuessingPageState extends State<GuessingPage> {
           () {Navigator.of(context).pop(false);},
           subtitle: Text('Chceš vypnút a opustiť hru', style: TextStyle(color:themeColor.textColorMain)),
           title: Text('Si si istý?', style: TextStyle(color:themeColor.textColorMain)),
+          positiveAnswer: 'Opustiť',
+          negativeAnswer: 'Zostať',
         );
       },
       child:Scaffold(
@@ -794,6 +802,8 @@ class _GuessingPageState extends State<GuessingPage> {
                     () {Navigator.of(context).pop(false);},
                     subtitle: Text('Chceš vypnút a opustiť hru', style: TextStyle(color:themeColor.textColorMain)),
                     title: Text('Si si istý?', style: TextStyle(color:themeColor.textColorMain)),
+                    positiveAnswer: 'Opustiť',
+                    negativeAnswer: 'Zostať',
                   );
                 }
               ),
@@ -865,6 +875,8 @@ class _GuessingPageState extends State<GuessingPage> {
                   },
                   subtitle: Text('Chceš preskočiť rastlinu', style: TextStyle(color: Colors.redAccent)),
                   title: Text('Si si istý?', style: TextStyle(color:themeColor.textColorMain)),
+                  positiveAnswer: 'Preskočiť',
+                  negativeAnswer: 'Nepreskočiť',
                 );
               },
             ),
@@ -1135,6 +1147,8 @@ class _GuessingPageState extends State<GuessingPage> {
             },
             subtitle: Text('Chceš použiť nápovedu \npre prvý názov rastliny', style: TextStyle(fontSize: 20, color: themeColor.textColorMain),),
             title: Text('Si si istý?', style: TextStyle(color:themeColor.textColorMain)),
+            positiveAnswer: 'Použiť nápovedu',
+            negativeAnswer: 'Nepoužiť nápovedu'
           );
         },
       );
@@ -1160,6 +1174,8 @@ class _GuessingPageState extends State<GuessingPage> {
               },
               subtitle: Text('Chceš použiť nápovedu \npre druhý názov rastliny', style: TextStyle(fontSize: 20, color: themeColor.textColorMain),),
               title: Text('Si si istý?', style: TextStyle(color:themeColor.textColorMain)),
+              positiveAnswer: 'Použiť nápovedu',
+              negativeAnswer: 'Nepoužiť nápovedu'
             );
           },
         );
@@ -1187,6 +1203,8 @@ class _GuessingPageState extends State<GuessingPage> {
               },
               subtitle: Text('Chceš použiť nápovedu \npre čeľad rastliny', style: TextStyle(fontSize: 20,color:themeColor.textColorMain),),
               title: Text('Si si istý?', style: TextStyle(color:themeColor.textColorMain)),
+              positiveAnswer: 'Použiť nápovedu',
+              negativeAnswer: 'Nepoužiť nápovedu'
             );
           },
         );
@@ -1834,6 +1852,13 @@ class _SettingsState extends State<SettingsPage > {
               activeColor: themeColor.themeColorMain,
             ),
           ),
+          Divider(thickness: 10, color: themeColor.themeColorBG),
+          ListTile(
+            title: Center(child: Text('Tutoriál', style: customTextStyle,)),
+            onTap: (){
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => GameTutorial(imageName: 'bioFlutterMainGame', numberOfImgs: 4, tutorialPref: 'tutorialGame1_isPlayed')));
+            },
+          ),
           // Divider(color: themeColor.themeColorBG, thickness:1),
           // Divider(color: Colors.black, thickness:2),
           // ListTile(
@@ -2187,41 +2212,6 @@ class _WrongAnswersPageState extends State<WrongAnswersPage> {
               image: AssetImage('assets/images/${plants[widget.wrongAnswersList[index]].path}.png'),
               fit: BoxFit.fitWidth,
             ),
-            
-            Positioned(
-              top: 120,
-              child: GestureDetector(
-                onTap: (){
-                  if(plants[widget.wrongAnswersList[index]].wikipediaLink != 'None'){
-                    launchUrl(Uri.parse(plants[widget.wrongAnswersList[index]].wikipediaLink));
-                  } else {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return const AlertDialog(
-                          alignment: Alignment.center,
-                          title: Text(
-                            'Slovenská wikipedia sa nenašla',
-                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 30, color:Colors.red, ),
-                            textAlign: TextAlign.center,
-                          ),
-                        );
-                      },
-                    );
-                  }
-                },
-                child: Row(
-                  children: const [
-                    Text(
-                      'wikipedia',
-                      style: TextStyle(fontSize: 30, color: Colors.blue, fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, decoration: TextDecoration.underline),
-                      textAlign: TextAlign.center,
-                    ),
-                    Icon(Icons.link, color:Colors.blue),
-                  ],
-                )
-              ),
-            ),
             floatingActionButton1,
             floatingActionButton2,
           ],
@@ -2329,11 +2319,27 @@ class _GameHistoryPageState extends State<GameHistoryPage> {
                 return Center(
                   child: ListTile(
                     onTap: (){
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (BuildContext context) => WrongAnswersPage(wrongAnswersList: changeFromStringToIntList(gameScore.wrongAnswersList),)   
-                        )
-                      );
+                      if(gameScore.wrongAnswersList.length != 0){
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => WrongAnswersPage(wrongAnswersList: changeFromStringToIntList(gameScore.wrongAnswersList),)   
+                          )
+                        );
+                      } else {
+                        showDialog(
+                          context: context,
+                          builder: (context){
+                            return AlertDialog(
+                              alignment: Alignment.center,
+                              title: Text(
+                                'Žiadne nesprávne odpovede',
+                                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 30, color:Colors.black, ),
+                                textAlign: TextAlign.center,
+                              ),
+                            );
+                          }
+                        );
+                      }
                     },
                     title: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -2448,3 +2454,143 @@ class DatabaseHelper {
   }
 }
 
+class GameTutorial extends StatefulWidget {
+  const GameTutorial({Key? key, required this.imageName, required this.numberOfImgs, required this.tutorialPref}) : super(key: key);
+  final String imageName;
+  final int numberOfImgs;
+  final String tutorialPref;
+
+  @override
+  State<GameTutorial> createState() => _GameTutorialState();
+}
+class _GameTutorialState extends State<GameTutorial> {
+  late List<String> images = [];
+  int onIndex = 0;
+  late Widget floatingActionButton1;
+  late Widget floatingActionButton2;
+
+  @override
+  void initState() {
+    for(int i=1;i<widget.numberOfImgs+1;i++){
+      images.insert(images.length, '${widget.imageName}$i');
+      debugPrint('$images');
+    }
+    initFloatingButtons();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: themeColor.themeColorMain,
+        title: const Text(
+          'Tutoriál',
+          style: TextStyle(
+            fontSize: 18,
+            color: Colors.white,
+          ),
+        ),
+      ),
+      body: Stack(
+        alignment: AlignmentDirectional.center,
+        children: [
+          Column(
+            children: [
+              Divider(color: Colors.grey, thickness: 3, indent: 50, endIndent: 50),
+              InteractiveViewer(
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: ClipRect(
+                    child: Image(
+                      image: AssetImage('assets/tutorials/bioFlutterMainGame${onIndex+1}.png'),
+                    ),
+                  ),
+                ),
+              ),
+              Divider(color: Colors.grey, thickness: 3, indent: 50, endIndent: 50),
+            ],
+          ),
+          floatingActionButton1,
+          floatingActionButton2,
+        ],
+      )
+    );
+  }
+  void initFloatingButtons(){
+    if(onIndex != 0){
+      floatingActionButton1 = Positioned(
+        left: 50,
+        bottom: 50,
+        child: FloatingActionButton(
+          heroTag: 'a',
+          onPressed: (){
+            debugPrint('prev');
+            prev();
+          },
+          child: Icon(Icons.arrow_back_ios_new_rounded),
+          backgroundColor: themeColor.themeColorMain,
+        ),
+      );
+    } else {
+      floatingActionButton1 = Positioned(
+        bottom: 50,
+        left: 30,
+        child: Text('', style: TextStyle(color: themeColor.themeColorBG))
+      );
+    }
+
+    if(onIndex < images.length-1){
+      floatingActionButton2 = Positioned(
+        right: 50,
+        bottom: 50,
+        child: FloatingActionButton(
+          heroTag: 'b',
+          onPressed: (){
+            debugPrint('Next');
+            next();
+          },
+          backgroundColor: themeColor.themeColorMain,
+          child: Icon(Icons.arrow_forward_ios_rounded)
+        ),
+      );
+    } else {
+      floatingActionButton2 = Positioned(
+        right: 50,
+        bottom: 50,
+        child: FloatingActionButton(
+          heroTag: 'b',
+          onPressed: (){
+            debugPrint('Next');
+            next();
+          },
+          backgroundColor: themeColor.themeColorMain,
+          child: Icon(Icons.next_plan_outlined)
+        ),
+      );
+    }
+  }
+
+  
+
+  void next() async {
+    if(onIndex < images.length-1){
+      onIndex++;
+    } else {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool(widget.tutorialPref, true);
+      Navigator.of(context).pop();
+    }
+    initFloatingButtons();
+    setState(() {});
+  }
+
+  void prev(){
+    if(onIndex > 0){
+      onIndex--;
+    }
+    initFloatingButtons();
+    setState(() {});
+  }
+
+}
