@@ -1,19 +1,17 @@
 import 'dart:math';
-import 'package:drift/drift.dart' as dr;
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
-import 'package:plants/drift_database.dart';
+// import 'package:plants/drift_database.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:path/path.dart' as path_dart;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/services.dart';
 import 'functions.dart';
 import 'classes.dart';
 import 'package:provider/provider.dart';
-import 'drift_database.dart';
-import 'package:moor_db_viewer/moor_db_viewer.dart';
+// import 'drift_database.dart';
+// import 'package:moor_db_viewer/moor_db_viewer.dart';
 
 
 final List<Plant> plants = makePlantList();
@@ -40,24 +38,20 @@ class MyApp extends StatelessWidget {
         DeviceOrientation.portraitUp,
         DeviceOrientation.portraitDown,
     ]);
-    return Provider(
-      create: (context) => AppDatabase(),
-      child: MaterialApp(
-        title: 'Poznávačka', 
-        theme: ThemeData(
-          
-          appBarTheme: const AppBarTheme(
-            centerTitle: true,
-          ),
+    return MaterialApp(
+      title: 'Poznávačka', 
+      theme: ThemeData(
+        
+        appBarTheme: const AppBarTheme(
+          centerTitle: true,
         ),
-        home: const MyHomePage(title: 'Flutter Demo Home Page'),
-        routes: {
-          'learningScreen': (BuildContext context) => const LearningPage(title: 'scr4'),
-          'settingsScreen': (BuildContext context) => const SettingsPage(),
-          'plantEnablingScreen': (BuildContext context) => const PlantEnablingPage(),
-          'gameHistoryScreen': (BuildContext context) => const GameHistoryPage(),
-        },
       ),
+      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      routes: {
+        'learningScreen': (BuildContext context) => const LearningPage(title: 'scr4'),
+        'settingsScreen': (BuildContext context) => const SettingsPage(),
+        'plantEnablingScreen': (BuildContext context) => const PlantEnablingPage(),
+      },
     );
   }
 }
@@ -1011,17 +1005,6 @@ class _GuessingPageState extends State<GuessingPage> {
     if(now.minute<10){
       nowTime = '${now.hour}:0${now.minute}';
     }
-    final database = Provider.of<AppDatabase>(context, listen:false);
-    // final database = AppDatabase();
-    database.insertHistoryGame(HistoryGamesCompanion.insert(
-      correct: correctAnswers,
-      wrong: wrongAnswers, 
-      hints: hintsUsed, 
-      time: nowTime, 
-      date: nowDate,
-      stopWatch: stopWatchTime, 
-      wrongAnswersList: changeFromIntListToString(wrongAnswersList))
-    );
     Navigator.of(context).pop();
     if(skipped == true){
       Navigator.of(context).pop();
@@ -1660,15 +1643,6 @@ class _SettingsState extends State<SettingsPage > {
             ),
           ),
           ListTile(
-            title: Center(child: Text('História hier', style: customTextStyle,)),
-            trailing: IconButton(
-              icon: const Icon(Icons.keyboard_arrow_right_rounded),
-              onPressed: (){
-                Navigator.of(context).pushNamed('gameHistoryScreen');
-              },
-            ),
-          ),
-          ListTile(
             title: Center(child:Text('Hádať aj čeľaď', style: customTextStyle)),
             trailing: Switch(
               value: guessFamily,
@@ -1968,284 +1942,6 @@ class _PlantEnablingPageState extends State<PlantEnablingPage> {
         },
       ),
     );
-  }
-}
-
-class WrongAnswersPage extends StatefulWidget {
-  WrongAnswersPage({Key? key, required this.wrongAnswersList}): super(key: key);
-  final List<int> wrongAnswersList;
-
-  @override
-  State<WrongAnswersPage> createState() => _WrongAnswersPageState();
-}
-class _WrongAnswersPageState extends State<WrongAnswersPage> {
-  int index = 0;
-  late Widget floatingActionButton1;
-  late Widget floatingActionButton2;
-
-  
-  @override
-  void initState() {
-    initFloatingButtons();
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    String? swipeDirection;
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: themeColor.themeColorMain,
-        title: const Text(
-          'Zlé odpovede',
-          style: TextStyle(
-            fontSize: 18,
-            color: Colors.white,
-          ),
-        ),
-      ),
-      body: GestureDetector(
-        onPanUpdate: (details) {
-          if(details.delta.dx < -10){
-            swipeDirection = 'left';
-          } else if ( details.delta.dx > 10){
-            swipeDirection = 'right';
-          }
-        },
-        onPanEnd: (details){
-          if (swipeDirection == null) {
-          return;
-          }
-          if (swipeDirection == 'left') {
-            nextPlant();
-          }
-          if (swipeDirection == 'right') {
-            previousPlant();
-          }
-        },
-        child: Stack(
-          alignment: Alignment.center,
-          fit: StackFit.expand,
-          children: [
-            Positioned(
-              top: 30,
-              child: Text(
-                plants[widget.wrongAnswersList[index]].family.toUpperCase(), 
-                style: const TextStyle(fontSize: 30, color: Colors.black, fontWeight: FontWeight.w500, fontStyle: FontStyle.italic),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            Positioned(
-              top: 80,
-              child: Text(
-                '${plants[widget.wrongAnswersList[index]].slovakFirstName} ${plants[widget.wrongAnswersList[index]].slovakLastName}'.toUpperCase(), 
-                style: const TextStyle(fontSize: 30, color: Colors.black, fontWeight: FontWeight.w500, fontStyle: FontStyle.italic),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            Divider(color: themeColor.themeColorBG, thickness: 10,),
-            Image(
-              image: AssetImage('assets/images/${plants[widget.wrongAnswersList[index]].path}.png'),
-              fit: BoxFit.fitWidth,
-            ),
-            floatingActionButton1,
-            floatingActionButton2,
-          ],
-        ),
-      )
-    );
-  }
-  void initFloatingButtons(){
-    if(index != 0){
-      floatingActionButton1 = Positioned(
-        bottom: 50,
-        left: 30,
-        child: FloatingActionButton(
-          heroTag: 'btn1',
-          onPressed: (){
-            previousPlant();
-          },
-          backgroundColor: themeColor.themeColorMain,
-          child: const Icon(Icons.arrow_circle_left_outlined),
-        ),
-      );
-    } else {
-      floatingActionButton1 = Positioned(
-        bottom: 50,
-        left: 30,
-        child: Text('', style: TextStyle(color: themeColor.themeColorBG))
-      );
-    }
-
-    if(index != widget.wrongAnswersList.length-1){
-      floatingActionButton2 = Positioned(
-        bottom: 50,
-        right: 30,
-        child: FloatingActionButton(
-          heroTag: 'btn2',
-          onPressed: (){
-            nextPlant();
-          },
-          backgroundColor: themeColor.themeColorMain,
-          child: const Icon(Icons.arrow_circle_right_outlined),
-        ),
-      );
-    } else {
-      floatingActionButton2 = Positioned(
-        bottom: 50,
-        right: 30,
-        child: Text('', style: TextStyle(color: themeColor.themeColorBG))
-      );
-    }
-  }
-
-  void nextPlant(){
-    if(index+1 >= widget.wrongAnswersList.length){
-    } else {
-      index++;
-    }
-    initFloatingButtons();
-    setState(() {});
-  }
-  void previousPlant(){
-    if(index-1 < 0){
-    } else {
-      index--;
-    }
-    initFloatingButtons();
-    setState(() {});
-  }
-
-}
-
-class GameHistoryPage extends StatefulWidget {
-  const GameHistoryPage({Key? key}) : super(key: key);
-
-  @override
-  State<GameHistoryPage> createState() => _GameHistoryPageState();
-}
-class _GameHistoryPageState extends State<GameHistoryPage> {
-  
-  
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: themeColor.themeColorBG,
-      appBar: AppBar(
-        backgroundColor: themeColor.themeColorMain,
-        title: const Text(
-          'História hier',
-          style: TextStyle(
-            fontSize: 18,
-            color: Colors.white,
-          ),
-        ),
-      ),
-      body: _buildHistoryGameList(context),
-    );
-  }
-
-  StreamBuilder<List<HistoryGame>> _buildHistoryGameList(BuildContext context){
-    final database = Provider.of<AppDatabase>(context, listen: false);
-    return StreamBuilder(
-      stream: database.watchAllHistoryGames(),
-      builder:(context, AsyncSnapshot<List<HistoryGame>> snapshot){
-        final historyGames = snapshot.data ?? [];
-        return ListView.builder(
-          itemCount: historyGames.length,
-          itemBuilder: (context, index){
-            final historyGame = historyGames[index];
-            return _buildGameContainer(historyGame);
-          },
-        );
-      }
-    );
-  }
-
-  Widget _buildGameContainer(HistoryGame historyGame){
-    return Center(
-        child: ListTile(
-          onTap: (){
-            if(historyGame.wrongAnswersList.length != 0){
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (BuildContext context) => WrongAnswersPage(wrongAnswersList: changeFromStringToIntList(historyGame.wrongAnswersList),)   
-                )
-              );
-            } else {
-              showDialog(
-                context: context,
-                builder: (context){
-                  return AlertDialog(
-                    alignment: Alignment.center,
-                    title: Text(
-                      'Žiadne nesprávne odpovede',
-                      style: TextStyle(fontWeight: FontWeight.w600, fontSize: 30, color:Colors.black, ),
-                      textAlign: TextAlign.center,
-                    ),
-                  );
-                }
-              );
-            }
-          },
-          title: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children:[
-                      Text(historyGame.date, style: const TextStyle(color: Colors.black, fontSize: 25, fontWeight: FontWeight.w500)),
-                      Text(historyGame.time, style: const TextStyle(color: Colors.black, fontSize: 25, fontWeight: FontWeight.w500)),
-                    ]
-                  ),
-                  Text(historyGame.stopWatch, style: const TextStyle(color: Colors.black, fontSize: 25, fontWeight: FontWeight.w500)),
-                ]
-              ),
-              Container(height:20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Column(
-                    children: [
-                      const Icon(Icons.done, color: Color.fromARGB(255, 1, 107, 7),size: 20,),
-                      Text(
-                        '${historyGame.correct}',
-                        style: const TextStyle(color: Color.fromARGB(255, 1, 107, 7), fontSize: 20),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                        Icon(Icons.close, color: Colors.red[800], size: 20,),
-                      Text(
-                        '${historyGame.wrong}',
-                        style: TextStyle(color: Colors.red[800], fontSize: 20),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Icon(Icons.lightbulb, color: Colors.yellow[700],size: 20,),
-                      Text(
-                        '${historyGame.hints}',
-                        style: TextStyle(color: Colors.yellow[700], fontSize: 20),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              Container(color: themeColor.themeColorBG, height:5),
-              Container(height: 3, color: Colors.grey,),
-            ],
-          )
-        ),
-      );
   }
 }
 
