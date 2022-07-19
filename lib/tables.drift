@@ -1,0 +1,4 @@
+CREATE TABLE historyGames (
+    id INT NOT NULL PRIMARY KEY AUTOINCREMENT
+    
+)
